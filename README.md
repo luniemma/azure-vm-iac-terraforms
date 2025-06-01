@@ -120,9 +120,8 @@ This project is licensed under the MIT License.
 
 This project provisions multiple Linux VMs on Microsoft Azure using a modular Terraform configuration. Each VM is deployed with its own Public IP, Network Interface, and Network Security Group (NSG) with custom inbound rules (ports 22, 80, 8080).
 
----
+![image](https://github.com/user-attachments/assets/109845f8-23e7-42e6-a5b9-a65f9d9dabe7)
 
-## 📸 Architecture Overview
 
 ```mermaid
 graph TD
