@@ -32,6 +32,45 @@ terraform-dynamic-vm/
         ├── variables.tf
         └── outputs.tf
 ```
+#!/bin/bash
+
+# Define project root directory
+ROOT_DIR="terraform-dynamic-vm"
+
+# Define directories and files
+declare -a DIRS=(
+  "$ROOT_DIR/modules/network"
+  "$ROOT_DIR/modules/vm"
+)
+
+declare -a FILES=(
+  "$ROOT_DIR/main.tf"
+  "$ROOT_DIR/variables.tf"
+  "$ROOT_DIR/outputs.tf"
+  "$ROOT_DIR/terraform.tfvars"
+  "$ROOT_DIR/modules/network/main.tf"
+  "$ROOT_DIR/modules/network/variables.tf"
+  "$ROOT_DIR/modules/network/outputs.tf"
+  "$ROOT_DIR/modules/vm/main.tf"
+  "$ROOT_DIR/modules/vm/variables.tf"
+  "$ROOT_DIR/modules/vm/outputs.tf"
+)
+
+# Create directories
+for dir in "${DIRS[@]}"; do
+  mkdir -p "$dir"
+done
+
+# Create files
+for file in "${FILES[@]}"; do
+  touch "$file"
+done
+
+echo "Terraform project structure created successfully!"
+
+# Optional: Print directory structure
+echo "Project Structure:"
+tree "$ROOT_DIR"
 
 ## Modules
 
