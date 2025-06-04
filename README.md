@@ -1,15 +1,19 @@
 # Terraform Dynamic VM Deployment
 
-This project demonstrates how to use Terraform to dynamically deploy virtual machines in Azure. The infrastructure as code (IaC) solution allows for flexible and repeatable VM deployments.
+This repository demonstrates the use of Terraform to deploy virtual machines dynamically in Azure. It leverages Infrastructure as Code (IaC) principles to ensure flexible and repeatable deployments.
 
 ## Prerequisites
 
-- [Terraform](https://www.terraform.io/downloads.html) (>= 1.0.0)
-- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
-- Azure subscription
-- Azure credentials configured
+To use this project, ensure you have the following:
+
+- [Terraform](https://www.terraform.io/downloads.html) version 1.0.0 or higher.
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) installed and configured.
+- An active Azure subscription.
+- Azure credentials set up for authentication.
 
 ## Project Structure
+
+The project is organized as follows:
 
 ```
 terraform-dynamic-vm/
@@ -23,15 +27,17 @@ terraform-dynamic-vm/
     │   ├── main.tf
     │   ├── variables.tf
     │   └── outputs.tf
-    ├── storage/
+    ├── vm/
     │   ├── main.tf
     │   ├── variables.tf
     │   └── outputs.tf
-    └── compute/
-        ├── main.tf
-        ├── variables.tf
-        └── outputs.tf
 ```
+
+## Bash Script for Project Setup
+
+To set up the project structure, use the following bash script:
+
+```bash
 #!/bin/bash
 
 # Define project root directory
@@ -71,57 +77,72 @@ echo "Terraform project structure created successfully!"
 # Optional: Print directory structure
 echo "Project Structure:"
 tree "$ROOT_DIR"
+```
 
-## Modules
+Save this script as `create_dir.sh` and execute it to generate the required project structure.
+
+## Modules Overview
 
 ### Network Module
-Handles the creation of virtual networks, subnets, and network security groups.
+This module provisions the virtual network, subnets, and network security groups (NSGs). It also associates NSGs with subnets.
 
-### Storage Module
-Manages storage accounts and disk configurations.
+### VM Module
+This module handles the creation of virtual machines, public IPs, network interfaces, and NSG rules. Each VM is configured with SSH access and custom inbound rules for ports 22, 80, and 8080.
 
-### Compute Module
-Responsible for VM creation and configuration.
+## Configuration Steps
 
-## Configuration
+1. **Initialize Terraform**:
+   ```bash
+   terraform init
+   ```
 
-1. Initialize Terraform:
-```bash
-terraform init
-```
+2. **Review Planned Changes**:
+   ```bash
+   terraform plan
+   ```
 
-2. Review the planned changes:
-```bash
-terraform plan
-```
+3. **Apply the Configuration**:
+   ```bash
+   terraform apply
+   ```
 
-3. Apply the configuration:
-```bash
-terraform apply
-```
+## Cleanup
 
-## Clean Up
-
-To remove all resources:
+To destroy all resources created by this configuration, run:
 ```bash
 terraform destroy
 ```
 
-## Contributing
+## Features
 
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
+- Deploy multiple Linux VMs with unique public IPs and NSGs.
+- Open ports for SSH (22), HTTP (80), and application traffic (8080).
+- Modular design for network and VM provisioning.
+- Support for SSH key-based or password-based login.
+
+## Security Considerations
+
+- Use `source_address_prefix = "<YOUR-IP>/32"` in NSG rules for secure SSH access.
+- Avoid using `*` (open to the world) in production environments.
+- Do not commit sensitive information like passwords or secrets to version control.
+
+## Customization
+
+- Add additional open ports in `modules/vm/main.tf`.
+- Extend functionality with auto-scaling, load balancers, or monitoring.
+- Use a remote backend for shared state (e.g., Azure Storage Account).
+
+## Feedback and Contributions
+
+For issues, suggestions, or improvements, feel free to open a GitHub issue or submit a pull request.
 
 ## License
 
 This project is licensed under the MIT License.
-# 🚀 Terraform: Dynamic Azure VM Deployment
 
-This project provisions multiple Linux VMs on Microsoft Azure using a modular Terraform configuration. Each VM is deployed with its own Public IP, Network Interface, and Network Security Group (NSG) with custom inbound rules (ports 22, 80, 8080).
+## Architecture Diagram
 
-![image](https://github.com/user-attachments/assets/109845f8-23e7-42e6-a5b9-a65f9d9dabe7)
-
+Below is a high-level representation of the traffic flow from the internet to each VM over allowed ports:
 
 ```mermaid
 graph TD
@@ -141,87 +162,15 @@ graph TD
     SUBNET2 --> VNET
 
     VNET[VNet: demo-vnet]
-Diagram: High-level representation of traffic flow from the internet to each VM over allowed ports (22, 80, 8080).
-✨ Features
-Multiple VMs with unique public IPs and NSGs
+```
 
-Open ports: 22 (SSH), 80 (HTTP), 8080 (App)
+## Placeholder Image File
 
-Modular design: network and VM modules
-
-SSH key or password-based login
-
-⚙️ Requirements
-Terraform CLI v1.3+
-
-Azure CLI logged in (az login)
-
-SSH key (~/.ssh/id_rsa.pub) or admin password
-
-🔧 Configuration (terraform.tfvars)
-hcl
-Copy
-Edit
-resource_group       = "demo-rg"
-location             = "eastus"
-vnet_name            = "demo-vnet"
-address_space        = ["10.0.0.0/16"]
-subnet_names         = ["subnet1", "subnet2"]
-subnet_prefixes      = ["10.0.1.0/24", "10.0.2.0/24"]
-vm_names             = ["vm1", "vm2"]
-vm_sizes             = ["Standard_B2s", "Standard_B2ms"]
-admin_username       = "azureuser"
-admin_password       = "P@ssw0rd1234!"
-ssh_public_key_path  = "~/.ssh/id_rsa.pub"
-🚀 Usage
-bash
-Copy
-Edit
-terraform init                      # Initialize provider
-terraform plan -var-file="terraform.tfvars"   # Review changes
-terraform apply -var-file="terraform.tfvars"  # Deploy VMs
-🔐 Security Considerations
-Use source_address_prefix = "<YOUR-IP>/32" in NSG rules for secure SSH
-
-Avoid using * (open to the world) in production
-
-Never commit passwords or secrets to version control
-
-🧹 Cleanup
-To destroy all resources created:
-
-bash
-Copy
-Edit
-terraform destroy -var-file="terraform.tfvars"
-🧩 Customization
-Add more open ports in modules/vm/main.tf
-
-Add auto-scaling, load balancers, or monitoring in modules
-
-Use remote backend for shared state (e.g., Azure Storage Account)
-
-📬 Feedback
-For issues, suggestions, or improvements, open a GitHub issue or pull request.
-
-📎 License
-MIT © Emmanuel Luni
-
-![alt text](image.png)
-
-
-![Architecture Diagram](./images/azure-vm-architecture.png)
-
----
-
-### 📁 Also Create the Directory and Placeholder Image File:
-
-1. Create a directory for images:
-
+To include screenshots or diagrams, create a directory for images:
 ```bash
 mkdir -p terraform-dynamic-vm/images
+```
 Save your screenshot as:
-
-
-Edit
+```
 terraform-dynamic-vm/images/azure-vm-ssh.png
+```
