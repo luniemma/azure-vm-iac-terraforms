@@ -43,11 +43,11 @@ variable "admin_username" {
   description = "Admin username for VM"
 }
 
-variable "admin_password" {
-  type        = string
-  sensitive   = true
-  description = "Admin password for VM"
-}
+# variable "admin_password" {
+#   type        = string
+#   sensitive   = true
+#   description = "Admin password for VM"
+# }
 variable "nsg_ids" {
   description = "List of Network Security Group IDs to associate with subnets"
   type        = list(string)

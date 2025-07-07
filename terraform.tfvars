@@ -11,6 +11,6 @@ vm_names       = ["vm1", "vm2"]
 vm_sizes       = ["Standard_B2s", "Standard_B2ms"]
 
 admin_username = "azureuser"
-admin_password = "ComplexPassword!1234"
-ssh_public_key_path = "~/.ssh/id_rsa.pub"   
+# admin_password = "ComplexPassword!1234"
+ssh_public_key_path = "~/.ssh/id_rsa.pub/ansiblekey.pub"   
 
