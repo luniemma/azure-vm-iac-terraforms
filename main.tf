@@ -18,7 +18,7 @@ module "vm" {
   vm_name             = var.vm_names[count.index]
   vm_size             = var.vm_sizes[count.index]
   admin_username      = var.admin_username
-  admin_password      = var.admin_password
+  admin_password      = var.admin_password 
   subnet_id           = module.network.subnet_ids[count.index % length(module.network.subnet_ids)]
   nsg_name            = "${var.vm_names[count.index]}-nsg"
   public_ip_name      = "${var.vm_names[count.index]}-pip"
